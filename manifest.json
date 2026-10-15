@@ -1,0 +1,10 @@
+{
+  "id": "pomnya-lite",
+  "name": "Pomnya Lite",
+  "version": "1.0.0",
+  "minAppVersion": "1.7.2",
+  "description": "Birthdays and anniversaries from your people notes: today, the coming days and a notice at startup.",
+  "author": "PN Scripts",
+  "authorUrl": "https://pnscripts.com",
+  "isDesktopOnly": false
+}

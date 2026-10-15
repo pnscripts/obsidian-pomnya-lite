@@ -1,0 +1,11 @@
+/* Pomnya Lite by PN Scripts */
+.pomnya-lite { padding: 4px 2px; font-size: var(--font-ui-small); }
+.pomnya-lite-date { font-size: var(--font-ui-medium); font-weight: var(--font-semibold); margin-bottom: 6px; }
+.pomnya-lite-label { font-weight: var(--font-semibold); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--font-ui-smaller); margin: 14px 0 6px; }
+.pomnya-lite-muted, .pomnya-lite-foot { color: var(--text-faint); }
+.pomnya-lite-foot { margin-top: 12px; font-size: var(--font-ui-smaller); }
+.pomnya-lite-row { display: flex; flex-direction: column; padding: 5px 8px; margin: 3px 0; border-radius: var(--radius-s); background: var(--background-secondary); border-left: 3px solid var(--color-pink, #d46a9e); }
+.pomnya-lite-row.pomnya-lite-anniversary { border-left-color: var(--color-purple, #9a6bd1); }
+.pomnya-lite-when, .pomnya-lite-extra { color: var(--text-muted); }
+.pomnya-lite-when { font-size: var(--font-ui-smaller); }
+.pomnya-lite-person { font-weight: var(--font-semibold); color: var(--text-accent, var(--interactive-accent)); text-decoration: none; }
