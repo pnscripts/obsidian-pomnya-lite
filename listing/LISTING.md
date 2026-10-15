@@ -1,12 +1,13 @@
 # Pomnya Lite: Obsidian community plugin submission
 
-Nothing has been submitted. The repository stays private until the coordinator publishes.
+Status 2026-10-15: the repository is **public** (https://github.com/pnscripts/obsidian-pomnya-lite), GitHub release `1.0.0` (no "v", equals the manifest version) with `main.js`, `manifest.json`, `styles.css`: https://github.com/pnscripts/obsidian-pomnya-lite/releases/tag/1.0.0. The id `pomnya-lite` and the name are free (checked against the 8,982 entries of community-plugins.json on 2026-10-15). README, LICENSE, manifest.json, versions.json are at the repo root.
 
-1. Make `github.com/pnscripts/obsidian-pomnya-lite` public (README, LICENSE, manifest.json, versions.json at the root).
-2. `make release`, then create a GitHub release with the tag `1.0.0` (exactly the manifest version, no "v") and attach `dist/main.js`, `dist/manifest.json`, `dist/styles.css`.
-3. Fork `obsidianmd/obsidian-releases`, add to the end of `community-plugins.json`:
-   `{"id": "pomnya-lite", "name": "Pomnya Lite", "author": "PN Scripts", "description": "Birthdays and anniversaries from your people notes: today, the coming days and a notice at startup.", "repo": "pnscripts/obsidian-pomnya-lite"}`
-   and open the pull request with the template filled in (it needs a GitHub account; the review bot checks the release and manifest).
-4. When it is listed, set the URL on Pomnya's pnscripts.com page (Get it on, Obsidian community, edition lite).
+**The pull-request route is gone.** `obsidianmd/obsidian-releases` is now only an hourly mirror of community.obsidian.md; new plugins are submitted on the directory site (docs.obsidian.md/Plugins/Releasing/Submit+your+plugin, read 2026-10-15). Review is automatic. Steps (browser):
+
+1. Sign in at https://community.obsidian.md with an Obsidian account (office@pnscripts.com).
+2. Profile: link the GitHub account that controls `pnscripts/obsidian-pomnya-lite` (the directory verifies repo ownership through it).
+3. "Add a plugin or theme" ("Set up and claim") → repository `pnscripts/obsidian-pomnya-lite`. The directory reads `manifest.json` from the HEAD of `main` and the files from the release whose tag equals the version.
+4. Fix anything the automated review lists, then publish a new release with an incremented version (bump `manifest.json` and `versions.json`, `make release`, release tag = version).
+5. When it is listed, set the URL on Pomnya's pnscripts.com page (Get it on, Obsidian community, edition lite).
 
 Checks run here: `tsc`, 5 vitest tests on a stand-in for the Obsidian API (the built main.js loaded as Obsidian loads it), manifest/versions consistency, no "Obsidian" in the description, command name without the plugin name, no default hotkeys, no innerHTML. Not run inside the Obsidian app.
