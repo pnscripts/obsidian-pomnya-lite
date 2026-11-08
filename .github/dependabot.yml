@@ -19,6 +19,20 @@ updates:
       npm-security:
         applies-to: security-updates
         patterns: ['*']
+    ignore:
+      # The obsidian package pins the exact CodeMirror versions the app ships
+      # (npm ERESOLVE otherwise); they move only together with obsidian. Both
+      # are build-time types: Obsidian provides CodeMirror at run time and
+      # main.js bundles none of it.
+      - dependency-name: '@codemirror/state'
+      - dependency-name: '@codemirror/view'
+      # Node types follow the Node inside Obsidian's Electron, not the newest Node.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      # TypeScript 7 (the native compiler) waits until typescript-eslint and
+      # the Obsidian lint rules support it.
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
     directory: /
