@@ -1,0 +1,42 @@
+name: CI
+
+# Every push to main and every pull request: Obsidian's own lint rules (the
+# rules the review of community plugins applies), the type check, the build of
+# main.js, the tests (including one that loads the built main.js) and the audit
+# of the development tools.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # Actions are pinned to commit hashes, so a moved tag cannot change what runs here.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      # The plugin bundles none of these packages into main.js; all of them are
+      # build, test and lint tools. minimatch (through eslint, typescript-eslint
+      # and eslint-plugin-obsidianmd) has a moderate advisory whose only fix is
+      # minimatch 11, outside the version ranges those tools accept, so the
+      # gate is high and above until they move. Dependabot proposes the update
+      # as soon as one exists.
+      - name: npm audit
+        run: npm audit --audit-level=high
+      - name: Obsidian lint rules
+        run: npm run lint
+      # make test: the build (type check and esbuild), then tsc and vitest.
+      - name: Build and tests
+        run: make test
