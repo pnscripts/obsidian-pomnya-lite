@@ -35,6 +35,21 @@ describe("Pomnya Lite", () => {
 		expect(key(upcoming(ymd(2027, 2, 1), 28, [leap])[0].date)).toBe("2027-02-28");
 	});
 
+	it("never shows a YAML map or list as a name", () => {
+		// name and first_name written as nested YAML used to read as "[object Object]".
+		const p = toPerson({
+			path: "People/Ana Petrova.md",
+			basename: "Ana Petrova",
+			frontmatter: { name: { first: "Ana", last: "Petrova" }, first_name: { short: "Ani" }, birthday: "1990-05-04", dates: ["2015-06-20 Wedding", "", { x: 1 }] },
+		});
+		expect(p.name).toBe("Ana Petrova");
+		expect(p.firstName).toBe("Ana");
+		expect(p.birthday).toEqual({ m: 5, d: 4, y: 1990 });
+		expect(p.anniversaries).toEqual([{ m: 6, d: 20, y: 2015, label: "Wedding" }]);
+		const listed = toPerson({ path: "People/B.md", basename: "B", frontmatter: { anniversaries: ["", "2001-01-02"], dates: "2003-03-04" } });
+		expect(listed.anniversaries).toEqual([{ m: 1, d: 2, y: 2001 }]);
+	});
+
 	it("shows today and the coming days, and a notice for today", async () => {
 		const { app, plugin } = await load();
 		expect(Notice.shown).toEqual(["Pomnya Lite: Mia and Tom Becker (Wedding, 11 years)"]);
@@ -88,7 +103,7 @@ describe("Pomnya Lite", () => {
 	it("has the files the community list asks for", async () => {
 		const manifest = (await import("../manifest.json", { with: { type: "json" } })).default;
 		const versions = (await import("../versions.json", { with: { type: "json" } })).default as Record<string, string>;
-		expect(manifest).toMatchObject({ id: "pomnya-lite", name: "Pomnya Lite", version: "1.0.0", author: "PN Scripts" });
+		expect(manifest).toMatchObject({ id: "pomnya-lite", name: "Pomnya Lite", version: "1.0.1", author: "PN Scripts" });
 		expect(versions[manifest.version]).toBe(manifest.minAppVersion);
 		expect(manifest.description).not.toMatch(/Obsidian/);
 		for (const f of ["README.md", "LICENSE", "styles.css"]) expect(existsSync(join(root, f))).toBe(true);

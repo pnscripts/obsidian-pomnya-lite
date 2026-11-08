@@ -33,14 +33,21 @@ const FIRST = ["first_name", "firstname", "given_name"];
 const BIRTH = ["birthday", "born", "birthdate", "date_of_birth", "dob"];
 const ANNIV = ["anniversary", "anniversaries", "dates"];
 
+/** A frontmatter value as text. A YAML map or list is not a name or a date, so it reads as empty, never as "[object Object]". */
 function asText(v: unknown): string {
-	if (v instanceof Date && !isNaN(v.getTime())) return `${v.getUTCFullYear()}-${v.getUTCMonth() + 1}-${v.getUTCDate()}`;
-	return v === null || v === undefined ? "" : String(v).trim();
+	if (v instanceof Date) return isNaN(v.getTime()) ? "" : `${v.getUTCFullYear()}-${v.getUTCMonth() + 1}-${v.getUTCDate()}`;
+	if (typeof v === "string") return v.trim();
+	if (typeof v === "number" || typeof v === "boolean" || typeof v === "bigint") return String(v);
+	return "";
 }
 
 function field(fm: Record<string, unknown> | undefined, keys: string[]): unknown {
 	if (!fm) return undefined;
-	for (const [k, v] of Object.entries(fm)) if (keys.includes(k.toLowerCase().trim()) && asText(v) !== "") return v;
+	for (const [k, v] of Object.entries(fm)) {
+		// A list (several anniversaries) counts when one of its items has text.
+		const filled = Array.isArray(v) ? v.some((x) => asText(x) !== "") : asText(v) !== "";
+		if (keys.includes(k.toLowerCase().trim()) && filled) return v;
+	}
 	return undefined;
 }
 

@@ -37,7 +37,8 @@ daily notes, and optional name days.
 ```
 npm ci
 npm run build     # main.js
-npx vitest run    # 5 tests on a stand-in for the Obsidian API, including the built main.js
+npx vitest run    # 6 tests on a stand-in for the Obsidian API, including the built main.js
+npm run lint      # Obsidian's own lint rules (eslint-plugin-obsidianmd)
 ```
 
 Tested on a stand-in for the Obsidian API with Obsidian's published types; not run inside the
